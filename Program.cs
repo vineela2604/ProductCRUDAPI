@@ -1,0 +1,30 @@
+using Microsoft.EntityFrameworkCore;
+using ProductCRUDAPI.Models;
+
+var builder = WebApplication.CreateBuilder(args);
+
+var connectionString = builder.Configuration.GetConnectionString("ProductDB");
+builder.Services.AddDbContextPool<ProductDBContext>(option =>
+option.UseSqlServer(connectionString)
+);
+
+
+builder.Services.AddControllers();
+
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+
+var app = builder.Build();
+
+
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
+
+app.UseAuthorization();
+
+app.MapControllers();
+
+app.Run();
